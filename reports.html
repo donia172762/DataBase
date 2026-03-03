@@ -1,0 +1,356 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<section class="rep-page">
+
+  <!-- HEADER -->
+  <div class="rep-head">
+    <div class="rep-title">
+      <h1>Reports</h1>
+      <p class="rep-subtitle">
+        Monthly overview for sales, customers, inventory and purchasing.
+      </p>
+    </div>
+
+    <form class="rep-filters" method="GET" action="{{ url_for('reports') }}">
+      <div class="f">
+        <label>Month</label>
+        <input type="month" name="month" value="{{ month }}">
+      </div>
+
+      <div class="f">
+        <label>Branch City</label>
+        <input type="text" name="branch_city" value="{{ branch_city }}" placeholder="Ramallah">
+      </div>
+
+      <div class="f">
+        <label>Low Stock &lt;</label>
+        <input type="number" name="threshold" value="{{ threshold }}" min="1">
+      </div>
+
+      <!-- ✅ Customer dropdown (from route) -->
+      <div class="f">
+        <label>Customer</label>
+        <select name="customer_id">
+          {% for c in customers_list %}
+            <option value="{{ c.customer_id }}" {% if c.customer_id == chosen_customer_id %}selected{% endif %}>
+              {{ c.customer_name }} (ID: {{ c.customer_id }})
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button class="rep-btn" type="submit">Apply</button>
+    </form>
+  </div>
+
+  <!-- KPI -->
+  <div class="rep-kpis">
+    <div class="kpi blue">
+      <div class="k-title">Total Sales Revenue (Month)</div>
+      <div class="k-value">{{ "%.2f"|format(kpis.total_sales_revenue) }} ₪</div>
+    </div>
+
+    <div class="kpi green">
+      <div class="k-title">Orders in {{ branch_city }} (Month)</div>
+      <div class="k-value">{{ kpis.total_orders_branch }}</div>
+    </div>
+
+    <div class="kpi purple">
+      <div class="k-title">Low Stock Items ({{ branch_city }})</div>
+      <div class="k-value">{{ kpis.low_stock_count }}</div>
+    </div>
+
+    <div class="kpi orange">
+      <div class="k-title">Total Inventory Value</div>
+      <div class="k-value">{{ "%.2f"|format(kpis.total_inventory_value) }} ₪</div>
+    </div>
+  </div>
+
+  <!-- TABLES -->
+  <div class="rep-section">
+    <h2>Tables</h2>
+    <p class="rep-note">
+      Customer selected: <b>{{ chosen_customer_name }}</b> (ID: <b>{{ chosen_customer_id }}</b>)
+      {% if chosen_so_id %}
+        | Latest Order ID: <b>{{ chosen_so_id }}</b>
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="rep-tables">
+
+    <!-- Table 1 -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Customer Orders (Month + Branch City)</h3>
+      </div>
+      <div class="table-wrap">
+        <table class="rep-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Branch City</th>
+              <th>Date</th>
+              <th class="right">Total (₪)</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in t_orders %}
+            <tr>
+              <td>{{ r.so_id }}</td>
+              <td>{{ r.customer_name }}</td>
+              <td>{{ r.branch_city }}</td>
+              <td>{{ r.sales_date }}</td>
+              <td class="right">{{ "%.2f"|format(r.total_amount) }}</td>
+              <td>{{ r.payment_status }}</td>
+            </tr>
+            {% endfor %}
+            {% if t_orders|length == 0 %}
+            <tr><td colspan="6" class="empty">No data for this month / branch city.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Table 2 -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Customer Order History (All Time)</h3>
+      </div>
+      <div class="table-wrap">
+        <table class="rep-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th class="right">Items</th>
+              <th class="right">Computed Total (₪)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in t_history %}
+            <tr>
+              <td>{{ r.so_id }}</td>
+              <td>{{ r.sales_date }}</td>
+              <td>{{ r.payment_status }}</td>
+              <td class="right">{{ r.items_count }}</td>
+              <td class="right">{{ "%.2f"|format(r.computed_total or 0) }}</td>
+            </tr>
+            {% endfor %}
+            {% if t_history|length == 0 %}
+            <tr><td colspan="5" class="empty">No orders found for this customer.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Table 3 (✅ Brand بدل Category) -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Latest Order Details</h3>
+      </div>
+      <div class="table-wrap">
+        <table class="rep-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Brand</th>
+              <th class="right">Qty</th>
+              <th class="right">Unit Price (₪)</th>
+              <th class="right">Line Total (₪)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in t_order_details %}
+            <tr>
+              <td>{{ r.product_name }}</td>
+              <td>{{ r.brand }}</td>
+              <td class="right">{{ r.qty_sold }}</td>
+              <td class="right">{{ "%.2f"|format(r.selling_price_per_unit) }}</td>
+              <td class="right">{{ "%.2f"|format(r.line_total) }}</td>
+            </tr>
+            {% endfor %}
+            {% if t_order_details|length == 0 %}
+            <tr><td colspan="5" class="empty">No order selected / no items.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Table 4 -->
+    <div class="card">
+      <div class="card-head">
+        <h3>Purchases (Top Supplier + Month + Top Warehouse)</h3>
+      </div>
+      <div class="table-wrap">
+        <table class="rep-table">
+          <thead>
+            <tr>
+              <th>PO</th>
+              <th>Supplier</th>
+              <th>Date</th>
+              <th>Warehouse</th>
+              <th>Product</th>
+              <th class="right">Qty</th>
+              <th class="right">Cost (₪)</th>
+              <th class="right">Line Total (₪)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in t_purchases %}
+            <tr>
+              <td>{{ r.po_id }}</td>
+              <td>{{ r.supplier_name }}</td>
+              <td>{{ r.order_date }}</td>
+              <td>{{ r.warehouse_name }}</td>
+              <td>{{ r.product_name }}</td>
+              <td class="right">{{ r.qty_received }}</td>
+              <td class="right">{{ "%.2f"|format(r.cost_per_unit) }}</td>
+              <td class="right">{{ "%.2f"|format(r.line_total) }}</td>
+            </tr>
+            {% endfor %}
+            {% if t_purchases|length == 0 %}
+            <tr><td colspan="8" class="empty">No purchase orders found for this month.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CHARTS -->
+  <div class="rep-section">
+    <h2>Charts</h2>
+    <p class="rep-note">Charts help visualize totals and comparisons.</p>
+  </div>
+
+  <div class="rep-charts">
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Best-selling Products by Branch (Qty)</h3>
+      </div>
+      <canvas id="ch1"></canvas>
+      <div id="ch1Empty" class="empty-state" style="display:none;">No sales data for this month.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Total Purchases by Supplier (Month)</h3>
+      </div>
+      <canvas id="ch2"></canvas>
+      <div id="ch2Empty" class="empty-state" style="display:none;">No purchase data for this month.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Most Purchased Products (Qty Received)</h3>
+      </div>
+      <canvas id="ch3"></canvas>
+      <div id="ch3Empty" class="empty-state" style="display:none;">No received items for this month.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Warehouse Stock Summary (Total Units)</h3>
+      </div>
+      <canvas id="ch4"></canvas>
+      <div id="ch4Empty" class="empty-state" style="display:none;">No stock data.</div>
+    </div>
+
+  </div>
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const charts = JSON.parse('{{ charts_json | safe }}');
+
+function hasValues(arr){
+  if (!arr || !arr.length) return false;
+  return arr.some(v => Number(v) > 0);
+}
+
+// Chart 1
+(function(){
+  const el = document.getElementById("ch1");
+  const empty = document.getElementById("ch1Empty");
+  if (!charts.best_selling_per_branch || !charts.best_selling_per_branch.labels || charts.best_selling_per_branch.labels.length === 0){
+    el.style.display = "none"; empty.style.display = "block"; return;
+  }
+  new Chart(el, {
+    type: "bar",
+    data: {
+      labels: charts.best_selling_per_branch.labels,
+      datasets: charts.best_selling_per_branch.datasets.map(ds => ({
+        label: ds.label,
+        data: ds.values
+      }))
+    }
+  });
+})();
+
+// Chart 2
+(function(){
+  const el = document.getElementById("ch2");
+  const empty = document.getElementById("ch2Empty");
+  const labels = charts.purchases_by_supplier?.labels || [];
+  const values = charts.purchases_by_supplier?.values || [];
+  if (!labels.length || !hasValues(values)){
+    el.style.display = "none"; empty.style.display = "block"; return;
+  }
+  new Chart(el, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{ label: "Total Purchased", data: values }]
+    }
+  });
+})();
+
+// Chart 3
+(function(){
+  const el = document.getElementById("ch3");
+  const empty = document.getElementById("ch3Empty");
+  const labels = charts.most_purchased_products?.labels || [];
+  const values = charts.most_purchased_products?.values || [];
+  if (!labels.length || !hasValues(values)){
+    el.style.display = "none"; empty.style.display = "block"; return;
+  }
+  new Chart(el, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{ label: "Qty Received", data: values }]
+    }
+  });
+})();
+
+// Chart 4
+(function(){
+  const el = document.getElementById("ch4");
+  const empty = document.getElementById("ch4Empty");
+  const labels = charts.warehouse_total_units?.labels || [];
+  const values = charts.warehouse_total_units?.values || [];
+  if (!labels.length || !hasValues(values)){
+    el.style.display = "none"; empty.style.display = "block"; return;
+  }
+  new Chart(el, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{ label: "Total Units", data: values }]
+    }
+  });
+})();
+</script>
+
+{% endblock %}

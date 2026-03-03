@@ -1,0 +1,118 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<section class="dash">
+
+  <div class="dash-head">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="muted">System overview and quick insights.</p>
+    </div>
+
+    <div class="dash-actions">
+      <a class="btn-ghost" href="{{ url_for('reports') }}">View Reports</a>
+      <a class="btn-primary" href="{{ url_for('products_list') }}">Add Product</a>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="dash-kpis">
+    <div class="kpi-card">
+      <div class="k-label">Employees</div>
+      <div class="k-value">{{ employees_count }}</div>
+      <div class="k-hint">Total staff records</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="k-label">Products</div>
+      <div class="k-value">{{ products_count }}</div>
+      <div class="k-hint">Items in catalog</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="k-label">Suppliers</div>
+      <div class="k-value">{{ suppliers_count }}</div>
+      <div class="k-hint">Active suppliers</div>
+    </div>
+
+    <div class="kpi-card warn">
+      <div class="k-label">Low Stock</div>
+      <div class="k-value">{{ low_stock_count }}</div>
+      <div class="k-hint">Below 10 units</div>
+    </div>
+  </div>
+
+  <!-- Tables -->
+  <div class="dash-grid">
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Latest Sales Orders</h3>
+        <a class="link" href="{{ url_for('sales_orders') }}">View all</a>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th class="right">Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in latest_sales %}
+            <tr>
+              <td>{{ r.so_id }}</td>
+              <td>{{ r.customer_name }}</td>
+              <td>{{ r.sales_date }}</td>
+              <td class="right">{{ "%.2f"|format(r.total_amount or 0) }} ₪</td>
+              <td>{{ r.payment_status }}</td>
+            </tr>
+            {% endfor %}
+            {% if latest_sales|length == 0 %}
+            <tr><td colspan="5" class="empty">No sales yet.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Low Stock Alerts</h3>
+        <a class="link" href="{{ url_for('admin_stock') }}">View stock</a>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Warehouse</th>
+              <th>Product</th>
+              <th class="right">Qty</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in low_stock_rows %}
+            <tr>
+              <td>{{ r.warehouse_name }}</td>
+              <td>{{ r.product_name }}</td>
+              <td class="right">{{ r.quantity_available }}</td>
+            </tr>
+            {% endfor %}
+            {% if low_stock_rows|length == 0 %}
+            <tr><td colspan="3" class="empty">All good. No low stock.</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

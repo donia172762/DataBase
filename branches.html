@@ -1,0 +1,118 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="container">
+
+  <h1 class="page-title">Branches</h1>
+  <p class="page-subtitle">Manage branch records (add, edit, delete).</p>
+
+  <!-- Toolbar -->
+  <div class="card toolbar">
+
+  <form class="search-area" method="GET" action="{{ url_for('admin_branches') }}">
+    <span class="search-label">Search by</span>
+
+    <select class="select" name="field">
+      <option value="all" {% if field=='all' %}selected{% endif %}>All Fields</option>
+      <option value="city" {% if field=='city' %}selected{% endif %}>City</option>
+      <option value="address" {% if field=='address' %}selected{% endif %}>Address</option>
+      <option value="phone" {% if field=='phone' %}selected{% endif %}>Phone</option>
+    </select>
+
+   
+    <input class="input" type="text" name="search" placeholder="Search..."
+           value="{{ search or '' }}">
+
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  <div class="toolbar-right">
+    <span class="badge">{{ branches|length }} Branches</span>
+    <button type="button" class="btn btn-add" onclick="openModal('branchModal')">
+      + Add New Branch
+    </button>
+  </div>
+
+</div>
+
+  
+
+  <!-- Table -->
+  <div class="card table-card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:90px;">ID</th>
+            <th>City</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th style="width:220px;">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for b in branches %}
+          <tr>
+            <td>{{ b.branch_id }}</td>
+            <td class="td-strong">{{ b.city }}</td>
+            <td>{{ b.address }}</td>
+            <td>{{ b.phone }}</td>
+            <td>
+              <div class="actions">
+                <a class="btn-edit" href="{{ url_for('edit_branch', branch_id=b.branch_id) }}">Edit</a>
+                <a class="btn-delete"
+                   href="{{ url_for('delete_branch', branch_id=b.branch_id) }}"
+                   onclick="return confirm('Delete this branch?')">Delete</a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+
+          {% if branches|length == 0 %}
+          <tr>
+            <td colspan="5" class="empty">No branches found.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add Branch Modal -->
+<div id="branchModal" class="modal">
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3>Add New Branch</h3>
+      <button type="button" class="modal-x" onclick="closeModal('branchModal')">✕</button>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin_branches') }}">
+      <div class="cust-grid">
+        <div class="f">
+          <label>City</label>
+          <input type="text" name="city" required placeholder="Ramallah">
+        </div>
+        <div class="f">
+          <label>Address</label>
+          <input type="text" name="address" required placeholder="Main Street">
+        </div>
+        <div class="f">
+          <label>Phone</label>
+          <input type="text" name="phone" required placeholder="059xxxxxxxx">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-ghost" onclick="closeModal('branchModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Add Branch</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

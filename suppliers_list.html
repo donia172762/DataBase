@@ -1,0 +1,39 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<h2>Suppliers</h2>
+
+<div class="table-card">
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Country</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in suppliers %}
+        <tr>
+            <td>{{ s.supplier_name }}</td>
+            <td>{{ s.phone }}</td>
+            <td>{{ s.country }}</td>
+            <td>
+                <a href="/supplier/edit/{{ s.supplier_id }}" class="edit">Edit</a>
+                |
+                <a href="/supplier/delete/{{ s.supplier_id }}"
+                   class="delete"
+                   onclick="return confirm('Are you sure?')">
+                   Delete
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<a href="/supplier/add" class="btn-primary">+ Add New Supplier</a>
+
+{% endblock %}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+   
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+   
+    <script>
+      const sortSelect = document.getElementById("sort");
+      const productsContainer = document.querySelector(".products-grid");
+
+      if (sortSelect && productsContainer) {
+        sortSelect.addEventListener("change", () => {
+          const products = Array.from(document.querySelectorAll(".product-card"));
+          let sortedProducts = products;
+
+          switch (sortSelect.value) {
+            case "name":
+              sortedProducts = products.sort((a, b) =>
+                a.dataset.name.localeCompare(b.dataset.name)
+              );
+              break;
+
+            case "price-low":
+              sortedProducts = products.sort((a, b) =>
+                parseFloat(a.dataset.price) - parseFloat(b.dataset.price)
+              );
+              break;
+
+            case "price-high":
+              sortedProducts = products.sort((a, b) =>
+                parseFloat(b.dataset.price) - parseFloat(a.dataset.price)
+              );
+              break;
+
+            case "best":
+              sortedProducts = products.sort((a, b) =>
+                parseFloat(b.dataset.sales || 0) - parseFloat(a.dataset.sales || 0)
+              );
+              break;
+          }
+
+          productsContainer.innerHTML = "";
+          sortedProducts.forEach(product => productsContainer.appendChild(product));
+        });
+      }
+    </script>
+  <footer class="main-footer">
+  <div class="footer-container">
+
+    <!-- ABOUT -->
+    <div class="footer-col">
+      <h3>I&D MART</h3>
+      <p>
+        LabMart is an integrated laboratory management system
+        providing products, inventory, and order management.
+      </p>
+    </div>
+
+    <!-- BRANCHES -->
+    <div class="footer-col">
+      <h4>Branches</h4>
+      <p>Ramallah</p>
+      <p>Nablus</p>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>Email: info@I&DMART.com</p>
+      <p>Phone: +970 599 123 456</p>
+    </div>
+
+    <!-- SOCIAL -->
+    <div class="footer-col">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#">Facebook</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 I&D MART. All Rights Reserved.
+  </div>
+</footer>
+
+</body>
+</html>

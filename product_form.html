@@ -1,0 +1,59 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<h2>{% if mode == 'add' %}Add Product{% else %}Edit Product{% endif %}</h2>
+
+<div class="form-card">
+<form method="POST" enctype="multipart/form-data" class="form-grid">
+
+    <input type="text" name="product_name"
+           placeholder="Product Name"
+           value="{{ product.product_name if product }}" required>
+
+    <input type="text" name="category"
+           placeholder="Category"
+           value="{{ product.category if product }}">
+
+    <input type="text" name="brand"
+           placeholder="Brand"
+           value="{{ product.brand if product }}">
+
+    <input type="number" step="0.01" name="unit_price_sell"
+           placeholder="Sell Price"
+           value="{{ product.unit_price_sell if product }}">
+
+    <input type="number" step="0.01" name="unit_price_cost"
+           placeholder="Cost Price"
+           value="{{ product.unit_price_cost if product }}">
+
+    <input type="date" name="expiry_date"
+           value="{{ product.expiry_date if product }}">
+
+    <input type="file" name="image" accept="image/*">
+    
+    {% if product and product.image %}
+        <input type="hidden" name="old_image" value="{{ product.image }}">
+        <img src="{{ url_for('static', filename='uploads/products/' ~ product.image) }}"
+             class="product-preview">
+    {% endif %}
+
+    <button class="btn-primary">
+        {% if mode == 'add' %}Add Product{% else %}Update Product{% endif %}
+    </button>
+<label>Category (Warehouse)</label>
+<select name="warehouse_id" required>
+    {% for w in warehouses %}
+        <option value="{{ w.warehouse_id }}">
+            {{ w.warehouse_name }}
+        </option>
+    {% endfor %}
+</select>
+
+<label>Quantity</label>
+<input type="number" name="quantity" min="1" required>
+</form>
+</div>
+
+
+
+{% endblock %}

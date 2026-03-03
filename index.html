@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LabMart - Branches</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>🏢 Branches</h1>
+
+<!-- ADD FORM -->
+<form class="form" method="post">
+    <input type="number" name="branch_id" placeholder="ID" required>
+    <input type="text" name="city" placeholder="City" required>
+    <input type="text" name="address" placeholder="Address" required>
+    <input type="text" name="phone" placeholder="Phone">
+    <button type="submit">➕ Add Branch</button>
+</form>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>City</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for b in branches %}
+    <tr>
+        <form action="/update/{{ b[0] }}" method="post">
+            <td>{{ b[0] }}</td>
+            <td><input name="city" value="{{ b[1] }}"></td>
+            <td><input name="address" value="{{ b[2] }}"></td>
+            <td><input name="phone" value="{{ b[3] }}"></td>
+            <td class="actions">
+                <button class="update">✏️ Update</button>
+        </form>
+
+        <form action="/delete/{{ b[0] }}" method="post">
+                <button class="delete">🗑 Delete</button>
+        </form>
+            </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

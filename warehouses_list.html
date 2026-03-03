@@ -1,0 +1,47 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="page-header">
+    <h2>Warehouses</h2>
+</div>
+
+<div class="card">
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Phone</th>
+            <th>Branch</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for w in warehouses %}
+        <tr>
+            <td>{{ w.warehouse_id }}</td>
+            <td>{{ w.warehouse_name }}</td>
+            <td>{{ w.location }}</td>
+            <td>{{ w.phone }}</td>
+            <td>{{ w.branch_city }}</td>
+            <td>
+                <a href="{{ url_for('edit_warehouse', id=w.warehouse_id) }}" class="link-edit">Edit</a>
+                |
+                <a href="{{ url_for('delete_warehouse', id=w.warehouse_id) }}"
+                   class="link-delete"
+                   onclick="return confirm('Delete this warehouse?')">
+                   Delete
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<div class="add-bottom">
+    <a href="{{ url_for('add_warehouse') }}" class="btn-primary">+ Add New Warehouse</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<h2>Low Stock Alert</h2>
+
+<div class="table-card">
+<table>
+    <thead>
+        <tr>
+            <th>Warehouse</th>
+            <th>Product</th>
+            <th>Quantity Available</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr class="low-stock-row">
+            <td>{{ item.warehouse_name }}</td>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.quantity_available }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% if items|length == 0 %}
+<p class="empty-msg">All products have sufficient stock 👍</p>
+{% endif %}
+
+{% endblock %}

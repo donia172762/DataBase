@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer | LabMart</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="simplebar">
+  <div class="logo">LabMart</div>
+  <a class="link" href="{{ url_for('landing') }}">Logout</a>
+</header>
+
+<section class="dash">
+  <h1>Welcome to LabMart</h1>
+  <p>Browse products and place your orders.</p>
+
+  <div class="grid">
+    <a class="tile" href="#">Browse Products (later)</a>
+    <a class="tile" href="#">My Orders (later)</a>
+    <a class="tile" href="#">Cart (later)</a>
+  </div>
+</section>
+
+</body>
+</html>

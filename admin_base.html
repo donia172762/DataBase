@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LabMart Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+
+{% block extra_css %}{% endblock %}
+
+</head>
+<body>
+
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2>LabMart</h2>
+        <ul>
+            <li><a href="{{ url_for('admin_home') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('admin_branches') }}">Branches</a></li>
+            <li><a href="{{ url_for('admin_customers') }}">Customers</a></li>
+
+            <li><a href="{{ url_for('admin_employees') }}">Employees</a></li>
+            <li><a href="{{ url_for('admin_warehouses') }}">Warehouses</a></li>
+            <li><a href="{{ url_for('suppliers') }}">Suppliers</a></li>
+            <li><a href="{{ url_for('products_list') }}">Products</a></li>
+            <li><a href="{{ url_for('admin_stock') }}">Warehouse Stock</a></li>
+
+
+
+            
+            <li><a href="{{ url_for('purchase_orders') }}">Purchase Orders</a></li>
+            <li><a href="{{ url_for('sales_orders') }}">Sales Orders</a></li>
+            <li><a href="{{ url_for('reports') }}">Report</a></li>
+            <li class="logout"><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+</div>
+<script>
+function openModal(id){ document.getElementById(id).classList.add("show"); }
+function closeModal(id){ document.getElementById(id).classList.remove("show"); }
+
+// close when clicking outside the box
+document.addEventListener("click", function(e){
+  if(e.target.classList && e.target.classList.contains("modal")){
+    e.target.classList.remove("show");
+  }
+});
+</script>
+
+
+</body>
+</html>

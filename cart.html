@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>I&D Mart | Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}"> <!-- ملف CSS جديد -->
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='image/Logo.jpg') }}">
+        <span>I&D MART</span>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/shop">Products</a>
+        <a href="#">Services</a>
+        <a href="/about">About</a>
+
+        {% if session.get('user_id') %}
+            <span class="user-chip">Hi, {{ session.get('user_name') }}</span>
+            <a href="/logout" class="btn">Log Out</a>
+        {% else %}
+            <a href="{{ url_for('login_role') }}" class="btn-outline">Login</a>
+        {% endif %}
+    </nav>
+</header>
+
+<div class="cart-page">
+
+    <!-- Main Cart Items Section -->
+    <div class="cart-items-container">
+    {% if cart_items %}
+        {% for item in cart_items %}
+            <div class="cart-item-card">
+                <div class="item-image">
+                    <img src="{{ url_for('static', filename='uploads/products/' ~ item.image) }}"
+                         alt="{{ item.name }}">
+                </div>
+
+                <div class="item-details">
+                    <h3>{{ item.name }}</h3>
+                    <p class="price">{{ item.price }} ₪</p>
+                    <p>Qty: {{ item.quantity }}</p>
+                </div>
+
+                <div class="item-actions">
+                    <a href="{{ url_for('remove_from_cart', product_id=item.product_id) }}"
+                       class="remove-btn">🗑️</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-cart">
+            <p>Your cart is empty.</p>
+            <a href="{{ url_for('shop') }}" class="btn">Continue Shopping</a>
+        </div>
+    {% endif %}
+</div>
+
+    <!-- Order Summary Section -->
+    <div class="order-summary-card">
+    <h2>Order Summary</h2>
+
+    <div class="summary-row">
+        <span>Subtotal</span>
+        <span>{{ subtotal }} ₪</span>
+    </div>
+
+    <div class="summary-row">
+        <span>Shipping</span>
+        <span>{{ shipping }} ₪</span>
+    </div>
+
+    <hr>
+
+    <div class="summary-row total">
+        <span>Total</span>
+        <span>{{ total }} ₪</span>
+    </div>
+
+    <a href="{{ url_for('checkout') }}" class="checkout-btn">
+        Proceed to Checkout
+    </a>
+</div>
+
+</div>
+</body>
+</html>

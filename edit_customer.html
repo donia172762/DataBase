@@ -1,0 +1,51 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<section class="br-page">
+
+  <div class="br-header">
+    <h1>Edit Customer</h1>
+    
+  </div>
+
+  <div class="card br-form-card">
+    <form class="br-form" method="POST">
+      <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap:12px;">
+        <div class="f">
+          <label>Name</label>
+          <input type="text" name="customer_name" value="{{ customer.customer_name }}" required>
+        </div>
+
+        <div class="f">
+          <label>Type</label>
+          <input type="text" name="type" value="{{ customer.type }}" required>
+        </div>
+
+        <div class="f">
+          <label>City</label>
+          <input type="text" name="city" value="{{ customer.city }}" required>
+        </div>
+
+        <div class="f">
+          <label>Phone</label>
+          <input type="text" name="phone" value="{{ customer.phone }}" required>
+        </div>
+
+        <div class="f">
+          <label>Email</label>
+          <input type="email" name="email" value="{{ customer.email }}" required>
+        </div>
+
+        <div class="f">
+          <label>New Password</label>
+          <input type="password" name="password" placeholder="Leave empty to keep same">
+        </div>
+      </div>
+
+      <button class="btn-primary big" type="submit">Update Customer</button>
+    </form>
+  </div>
+
+</section>
+
+{% endblock %}

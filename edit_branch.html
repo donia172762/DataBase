@@ -1,0 +1,16 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="br-header">
+  <h1>Edit Branch</h1>
+  
+</div>
+
+
+<form method="POST" class="form-inline">
+    <input type="text" name="city" value="{{ branch.city }}" required>
+    <input type="text" name="address" value="{{ branch.address }}" required>
+    <input type="text" name="phone" value="{{ branch.phone }}">
+    <button type="submit">Update</button>
+</form>
+{% endblock %}

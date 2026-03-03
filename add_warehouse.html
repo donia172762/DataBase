@@ -1,0 +1,42 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="page-header">
+    <h2>Add New Warehouse</h2>
+</div>
+
+<div class="card">
+    <form method="POST" class="form-grid">
+
+        <input type="text"
+               name="warehouse_name"
+               placeholder="Warehouse Name"
+               required>
+
+        <input type="text"
+               name="location"
+               placeholder="Location"
+               required>
+
+        <input type="text"
+               name="phone"
+               placeholder="Phone"
+               required>
+
+        <select name="branch_id" required>
+            <option value="" disabled selected>Select Branch</option>
+            {% for b in branches %}
+                <option value="{{ b.branch_id }}">
+                    {{ b.city }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-primary">
+            Add Warehouse
+        </button>
+
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>I&D Mart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='image/Logo.jpg') }}" alt="LabMart Logo">
+        <span>I&D MART</span>
+    </div>
+
+    <nav>
+  <a href="/">Home</a>
+  <a href="/shop">Products</a>
+  <a href="#">Services</a>
+  <a href="/about">About</a>
+  {% if session.get('user_id') %}
+    <span class="user-chip">Hi, {{ session.get('user_name') }}</span>
+    <a href="/logout" class="btn">Log Out</a>
+  {% else %}
+    <a href="{{ url_for('login_role') }}" class="btn-outline">Login</a>
+  {% endif %}
+</nav>
+</header>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <h1>Smart Laboratory Management</h1>
+        <p>
+            Manage suppliers, warehouses, and laboratory equipment
+            with a modern, reliable, and efficient system.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="/login-role" class="btn">Get Started</a>
+            <a href="#about" class="btn-outline">Learn More</a>
+        </div>
+    </div>
+</section>
+<section class="intro">
+    <h2>Why LabMart?</h2>
+    <p>
+        LabMart provides an integrated solution to manage laboratory suppliers,
+        warehouses, stock levels, and purchase orders efficiently.
+    </p>
+</section>
+<section class="products">
+    <h2>Our Products</h2>
+
+  <div class="products-grid">
+    <div class="product-box">Laboratory Equipment</div>
+    <div class="product-box">Chemicals</div>
+</div>
+
+</section>
+<section id="about" class="about-section">
+    <div class="about-container">
+        <img src="{{ url_for('static', filename='image/1.jpg') }}" alt="Our Branches">
+
+        <div class="about-text">
+            <h2>About LabMart</h2>
+            <p>
+                LabMart operates across <strong>Ramallah</strong> and <strong>Nablus</strong>,
+                providing reliable laboratory management solutions including warehouses,
+                suppliers, and inventory control.
+            </p>
+            <p>
+                Our system is designed to simplify laboratory operations and ensure
+                efficiency, accuracy, and transparency.
+            </p>
+        </div>
+    </div>
+</section>
+<section class="testimonials">
+    <h2>What Our Customers Say</h2>
+
+    <div class="testimonials-grid">
+
+        <div class="testimonial-card">
+            <img src="{{ url_for('static', filename='image/cus2.jpg') }}" alt="Customer 1">
+            <p>
+                "Excellent quality laboratory equipment and very fast delivery.
+                LabMart made our purchasing process extremely easy."
+            </p>
+            <h4>Sarah K.</h4>
+            <span>Medical Lab Manager</span>
+        </div>
+
+        <div class="testimonial-card">
+            <img src="{{ url_for('static', filename='image/cus1.jpg') }}" alt="Customer 2">
+            <p>
+                "Professional service and reliable products.
+                Their support team is always helpful and responsive."
+            </p>
+            <h4>Mohammad D.</h4>
+            <span>Chemistry Researcher</span>
+        </div>
+
+        <div class="testimonial-card">
+            <img src="{{ url_for('static', filename='image/cus3.jpg') }}" alt="Customer 3">
+            <p>
+                "We trust LabMart for all our lab supplies.
+                High-quality products with competitive prices."
+            </p>
+            <h4>Noura R.</h4>
+            <span>Hospital Procurement</span>
+        </div>
+
+    </div>
+</section>
+
+<section class="team-section">
+    <h2>Our Team</h2>
+
+    <div class="team-grid">
+        <div class="team-card">
+            <img src="{{ url_for('static', filename='image/donia.jpeg') }}">
+            <div class="team-overlay">
+                <h3>Donia Said</h3>
+                <p>Full Stack & Database</p>
+                <div class="team-links">
+                    <a href="#linkedin.com/in/donia-said-">LinkedIn</a>
+                    <a href="#https://github.com/">GitHub</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="team-card">
+            <img src="{{ url_for('static', filename='image/israa.jpeg') }}">
+            <div class="team-overlay">
+                <h3>Israa Turkman</h3>
+                <p>Full Stack  & DataBase</p>
+                <div class="team-links">
+                    <a href="#">LinkedIn</a>
+                    <a href="#">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="main-footer">
+  <div class="footer-container">
+
+    <!-- ABOUT -->
+    <div class="footer-col">
+      <h3>I&D MART</h3>
+      <p>
+        LabMart is an integrated laboratory management system
+        providing products, inventory, and order management.
+      </p>
+    </div>
+
+    <!-- BRANCHES -->
+    <div class="footer-col">
+      <h4>Branches</h4>
+      <p>Ramallah</p>
+      <p>Nablus</p>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>Email: info@I&DMART.com</p>
+      <p>Phone: +970 599 123 456</p>
+    </div>
+
+    <!-- SOCIAL -->
+    <div class="footer-col">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#">Facebook</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 I&D MART. All Rights Reserved.
+  </div>
+</footer>
+
+
+
+
+</body>
+</html>

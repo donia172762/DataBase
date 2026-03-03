@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="navbar">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='image/Logo.jpg') }}" alt="LabMart Logo">
+        <span>I&D MART</span>
+    </div>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/shop">Products</a>
+        <a href="/about" class="btn">About</a>
+        <a href="{{url_for('login_role')}}" class="btn-outline">Login</a>
+         <a href="/logout" class="btn">Log Out</a>
+    </nav>
+</header>
+<div class="role-bg">
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Back button -->
+  <a href="{{ url_for('landing') }}" class="back-btn">← Back</a>
+
+  <!-- Content -->
+  <div class="role-container">
+    <h1>Choose Your Role to Login</h1>
+
+    <div class="role-boxes">
+      <a href="{{ url_for('login_by_role', role='admin') }}" class="role-card">
+        Manager
+      </a>
+
+      <a href="{{ url_for('login_by_role', role='customer') }}" class="role-card">
+        Customer
+      </a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="page-header">
+    <h2>Warehouses</h2>
+    <span class="badge">{{ warehouses|length }} Total</span>
+</div>
+
+<div class="card">
+    <div class="table-actions">
+        <input type="text" placeholder="Search warehouse...">
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Phone</th>
+                <th>Branch</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for w in warehouses %}
+            <tr>
+                <td>{{ w.warehouse_id }}</td>
+                <td>{{ w.warehouse_name }}</td>
+                <td>{{ w.location }}</td>
+                <td>{{ w.phone }}</td>
+                <td>{{ w.branch_city }}</td>
+                <td>
+                    <a href="{{ url_for('edit_warehouse', id=w.warehouse_id) }}" class="btn-edit">Edit</a>
+                    <a href="{{ url_for('delete_warehouse', id=w.warehouse_id) }}"
+                       class="btn-delete"
+                       onclick="return confirm('Delete warehouse?')">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card add-card">
+    <h3>Add New Warehouse</h3>
+    <form method="POST" action="{{ url_for('add_warehouse') }}">
+        <input name="warehouse_name" placeholder="Warehouse Name" required>
+        <input name="location" placeholder="Location" required>
+        <input name="phone" placeholder="Phone" required>
+
+        <select name="branch_id" required>
+            <option value="">Select Branch</option>
+            {% for b in branches %}
+            <option value="{{ b.branch_id }}">{{ b.city }}</option>
+            {% endfor %}
+        </select>
+
+        <button class="btn-primary">Add Warehouse</button>
+    </form>
+</div>
+
+{% endblock %}

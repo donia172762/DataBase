@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='image/Logo.jpg') }}" alt="LabMart Logo">
+        <span>I&D MART</span>
+    </div>
+
+   <nav>
+  <a href="/">Home</a>
+  <a href="/shop">Products</a>
+  <a href="#">Services</a>
+  <a href="/about">About</a>
+
+  {% if session.get('user_id') %}
+    <span class="user-chip">Hi, {{ session.get('user_name') }}</span>
+    <a href="/logout" class="btn">Log Out</a>
+  {% else %}
+    <a href="{{ url_for('login_role') }}" class="btn-outline">Login</a>
+  {% endif %}
+</nav>
+
+</header>
+<section class="about-hero">
+    <div class="about-text">
+        <h1>About I&D MART</h1>
+        <p>
+            LabMart is a specialized platform providing high-quality medical and chemical laboratory
+            equipment. We connect laboratories with trusted suppliers and manage warehouses,
+            stock, and orders efficiently.
+        </p>
+    </div>
+    <div class="about-image">
+        <!-- انتي غيري الصورة -->
+        <img src="{{ url_for('static', filename='image/5.jpg') }}" alt="Laboratory">
+    </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="about-experience">
+    <p>
+        With years of experience in laboratory solutions, LabMart collaborates with leading
+        international companies to deliver reliable, modern, and safe laboratory equipment
+        for medical and scientific institutions.
+    </p>
+</section>
+
+<!-- STATS -->
+<section class="about-stats">
+    <div class="stat-box">
+        <h2>50+</h2>
+        <span>Suppliers</span>
+    </div>
+    <div class="stat-box">
+        <h2>120+</h2>
+        <span>Products</span>
+    </div>
+    <div class="stat-box">
+        <h2>30+</h2>
+        <span>Companies</span>
+    </div>
+    <div class="stat-box">
+        <h2>25+</h2>
+        <span>Professionals</span>
+    </div>
+</section>
+
+<!-- LOCATIONS -->
+<section class="about-locations">
+    <h2>Our Locations</h2>
+    <p>We proudly operate in two main locations in Palestine:</p>
+    <ul>
+        <li>Nablus</li>
+        <li>Ramallah</li>
+    </ul>
+</section>
+
+<!-- MAP -->
+<section class="map-section">
+    <h2>Our Locations</h2>
+
+    <div class="map-container">
+        <!-- Nablus -->
+        <iframe 
+            src="https://www.google.com/maps?q=Nablus,Palestine&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+        <!-- Ramallah -->
+        <iframe 
+            src="https://www.google.com/maps?q=Ramallah,Palestine&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+    </div>
+</section>
+<footer class="main-footer">
+  <div class="footer-container">
+
+    <!-- ABOUT -->
+    <div class="footer-col">
+    <h3>I&D MART</h3>
+      <p>
+        LabMart is an integrated laboratory management system
+        providing products, inventory, and order management.
+      </p>
+    </div>
+
+    <!-- BRANCHES -->
+    <div class="footer-col">
+      <h4>Branches</h4>
+      <p>Ramallah</p>
+      <p>Nablus</p>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>Email: info@I&DMART.com</p>
+      <p>Phone: +970 599 123 456</p>
+    </div>
+
+    <!-- SOCIAL -->
+    <div class="footer-col">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#">Facebook</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Instagram</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 I&D MART. All Rights Reserved.
+  </div>
+</footer>
+
+</body>
+</html>

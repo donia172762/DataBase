@@ -1,0 +1,23 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<h2>Inventory Value</h2>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Warehouse</th>
+      <th>Total Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in data %}
+    <tr>
+      <td>{{ r.warehouse_name }}</td>
+      <td>{{ r.value }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<h2>Products</h2>
+
+<div class="table-card">
+<table>
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Brand</th>
+            <th>Sell Price</th>
+            <th>Cost Price</th>
+            <th>Expiry</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in products %}
+        <tr>
+            <td>
+                {% if p.image %}
+                <img src="{{ url_for('static', filename='uploads/products/' ~ p.image) }}"
+                     class="product-img">
+                {% else %}
+                -
+                {% endif %}
+            </td>
+            <td>{{ p.product_name }}</td>
+            <td>{{ p.category }}</td>
+            <td>{{ p.brand }}</td>
+            <td>{{ p.unit_price_sell }}</td>
+            <td>{{ p.unit_price_cost }}</td>
+            <td>{{ p.expiry_date }}</td>
+            <td>
+                <a href="/products/edit/{{ p.product_id }}" class="edit">Edit</a> |
+                <a href="/products/delete/{{ p.product_id }}" class="delete"
+                   onclick="return confirm('Delete this product?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+<a href="/products/add" class="btn-primary">+ Add Product</a>
+
+{% endblock %}

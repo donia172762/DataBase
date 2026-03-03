@@ -1,0 +1,64 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<section class="emp-page">
+
+  <div class="br-header">
+    <h1>Edit Employee</h1>
+    <p>Update employee information.</p>
+  </div>
+
+  <div class="card br-form-card emp-edit-card">
+    <form class="br-form emp-form" method="POST">
+
+      <div class="grid emp-grid">
+        <div class="f">
+          <label>Name</label>
+          <input type="text" name="name" value="{{ employee.name }}" required>
+        </div>
+
+        <div class="f">
+          <label>Position</label>
+          <input type="text" name="position" value="{{ employee.position }}" required>
+        </div>
+
+        <div class="f">
+          <label>Salary</label>
+          <input type="number" step="0.01" name="salary" value="{{ employee.salary }}" required>
+        </div>
+
+        <div class="f">
+          <label>Branch</label>
+          <select name="branch_id" required>
+            {% for b in branches %}
+              <option value="{{ b.branch_id }}" {% if b.branch_id == employee.branch_id %}selected{% endif %}>
+                {{ b.city }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="f">
+          <label>Warehouse (optional)</label>
+          <select name="warehouse_id">
+            <option value="">- None -</option>
+            {% for w in warehouses %}
+              <option value="{{ w.warehouse_id }}" {% if employee.warehouse_id == w.warehouse_id %}selected{% endif %}>
+                {{ w.warehouse_name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="emp-actions">
+        <a class="btn-ghost" href="{{ url_for('admin_employees') }}">Back</a>
+        <button class="btn-primary big" type="submit">Update Employee</button>
+      </div>
+
+    </form>
+  </div>
+
+</section>
+
+{% endblock %}

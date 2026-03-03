@@ -1,0 +1,22 @@
+{% extends 'admin_base.html' %}
+{% block content %}
+
+<h2>Edit Supplier</h2>
+
+<div class="form-card">
+<form method="POST" class="form-grid">
+
+    <input type="text" name="supplier_name"
+           value="{{ supplier.supplier_name }}" required>
+
+    <input type="text" name="phone"
+           value="{{ supplier.phone }}" required>
+
+    <input type="text" name="country"
+           value="{{ supplier.country }}" required>
+
+    <button class="btn-primary">Update Supplier</button>
+</form>
+</div>
+
+{% endblock %}

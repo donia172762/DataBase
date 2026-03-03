@@ -1,0 +1,66 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<h2>Purchase Order #{{ order.po_id }}</h2>
+<p><b>Supplier:</b> {{ order.supplier_name }}</p>
+<p><b>Date:</b> {{ order.order_date }}</p>
+<p><b>Total Cost:</b> {{ order.total_cost }}</p>
+
+<hr>
+
+<h3>Items</h3>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Warehouse</th>
+      <th>Qty</th>
+      <th>Cost / Unit</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in items %}
+    <tr>
+      <td>{{ i.product_name }}</td>
+      <td>{{ i.warehouse_name }}</td>
+      <td>{{ i.qty_received }}</td>
+      <td>{{ i.cost_per_unit }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<hr>
+
+<h3>Add Item</h3>
+
+<div class="form-card">
+<form method="post" action="{{ url_for('add_purchase_order_item') }}">
+  <input type="hidden" name="po_id" value="{{ order.po_id }}">
+
+  <label>Product</label>
+  <select name="product_id">
+    {% for p in products %}
+    <option value="{{ p.product_id }}">{{ p.product_name }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Warehouse</label>
+  <select name="warehouse_id">
+    {% for w in warehouses %}
+    <option value="{{ w.warehouse_id }}">{{ w.warehouse_name }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Quantity</label>
+  <input type="number" name="qty" required>
+
+  <label>Cost per unit</label>
+  <input type="number" step="0.01" name="cost" required>
+
+  <button type="submit" class="btn-primary">Add Item</button>
+</form>
+</div>
+
+{% endblock %}

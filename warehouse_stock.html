@@ -1,0 +1,102 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="container">
+
+  <h1 class="page-title">Warehouse Stock</h1>
+  <p class="page-subtitle">
+    Shows available quantities for each product in each warehouse.
+  </p>
+
+  <!-- ================= Search Box ================= -->
+  <div class="card" style="margin-bottom:20px;">
+    <form method="GET" action="{{ url_for('admin_stock') }}" class="search-form">
+
+      <div class="cust-grid">
+        <div class="f">
+          <label>Search by</label>
+          <select name="field">
+            <option value="all" {% if field == 'all' %}selected{% endif %}>All</option>
+            <option value="warehouse" {% if field == 'warehouse' %}selected{% endif %}>Warehouse</option>
+            <option value="product" {% if field == 'product' %}selected{% endif %}>Product</option>
+          </select>
+        </div>
+
+        <div class="f">
+          <label>Keyword</label>
+          <input type="text" name="search" placeholder="Search..."
+                 value="{{ search or '' }}">
+        </div>
+
+        <div class="f" style="display:flex;align-items:flex-end;">
+          <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+
+        <div class="f" style="display:flex;align-items:flex-end;justify-content:flex-end;">
+          <span class="badge">{{ items|length }} Records</span>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- ================= Stock Table ================= -->
+  <div class="card table-card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Warehouse ID</th>
+          <th>Product ID</th>
+          <th>Warehouse</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Last Restock</th>
+          <th style="width:140px;">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% if items %}
+          {% for row in items %}
+          <tr class="{% if row.quantity_available < 10 %}low-stock{% endif %}">
+            <td>{{ row.warehouse_id }}</td>
+            <td>{{ row.product_id }}</td>
+            <td><strong>{{ row.warehouse_name }}</strong></td>
+            <td>{{ row.product_name }}</td>
+            <td>
+              {{ row.quantity_available }}
+              {% if row.quantity_available < 10 %}
+                <span class="badge danger">Low</span>
+              {% endif %}
+            </td>
+            <td>{{ row.last_restock_date or "-" }}</td>
+            <td>
+              <a class="btn-edit"
+                 href="{{ url_for('update_stock',
+                                  warehouse_id=row.warehouse_id,
+                                  product_id=row.product_id) }}">
+                Update
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="7" style="text-align:center;">
+              No stock records found.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:20px;">
+    <a href="{{ url_for('admin_home') }}" class="btn btn-outline">
+      ← Back to Dashboard
+    </a>
+  </div>
+
+</div>
+
+{% endblock %}

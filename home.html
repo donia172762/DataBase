@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LabMart | Laboratory Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">LabMart</div>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/suppliers">Suppliers</a></li>
+        <li><a href="/warehouses">Warehouses</a></li>
+        <li><a href="/purchase_orders">Purchase Orders</a></li>
+        <li><a href="/stock/low">Low Stock</a></li>
+    </ul>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h1>Smart Laboratory Inventory & Supply Management</h1>
+    <p>
+        Manage suppliers, warehouses, stock levels and purchase orders  
+        in one powerful system.
+    </p>
+
+    <div class="hero-buttons">
+        <a href="/suppliers" class="btn primary">Manage Suppliers</a>
+        <a href="/warehouses" class="btn secondary">View Warehouses</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="feature-card">
+        <h3>Suppliers Management</h3>
+        <p>Add, update and manage laboratory suppliers easily.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>Warehouse Stock</h3>
+        <p>Track products and quantities in each warehouse.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>Purchase Orders</h3>
+        <p>Create and manage purchase orders with real-time stock updates.</p>
+    </div>
+
+    <div class="feature-card">
+        <h3>Low Stock Alerts</h3>
+        <p>Quickly identify products that need restocking.</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <p>© 2026 LabMart – Database Systems Project</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<section class="emp-page">
+
+  <div class="br-header">
+    <h1>Employees</h1>
+   
+  </div>
+
+  <!-- Toolbar -->
+  <div class="br-toolbar card">
+  <div class="toolbar-left">
+
+    <div class="field-inline">
+      <span>Search by</span>
+      <select name="field" form="empSearchForm">
+        <option value="name" selected>Name</option>
+        <option value="position">Position</option>
+        <option value="branch">Branch</option>
+        <option value="warehouse">Warehouse</option>
+      </select>
+    </div>
+
+    <form id="empSearchForm" class="toolbar-search" method="GET" action="{{ url_for('admin_employees') }}">
+      <input type="text" name="search" placeholder="Search..." value="{{ search or '' }}">
+      <button class="btn-primary" type="submit">Search</button>
+    </form>
+
+  </div>
+
+  <div class="toolbar-right">
+    <a class="btn-primary" href="{{ url_for('add_employee') }}">+ Add New Employee</a>
+  </div>
+</div>
+
+
+   
+
+  <!-- Table -->
+  <div class="card br-table-card">
+    <div class="table-wrap">
+      <table class="br-table emp-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th class="right">Salary</th>
+            <th>Branch</th>
+            <th>Warehouse</th>
+            <th style="width:190px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in employees %}
+          <tr>
+            <td class="strong">{{ e.name }}</td>
+            <td>{{ e.position }}</td>
+            <td class="right">{{ "%.2f"|format(e.salary) }}</td>
+            <td>{{ e.branch_name }}</td>
+            <td>{{ e.warehouse_name if e.warehouse_name else "-" }}</td>
+            <td>
+              <a class="btn-small btn-edit" href="{{ url_for('edit_employee', id=e.employee_id) }}">Edit</a>
+              <a class="btn-small btn-del"
+                 href="{{ url_for('delete_employee', id=e.employee_id) }}"
+                 onclick="return confirm('Delete this employee?')">Delete</a>
+            </td>
+          </tr>
+          {% endfor %}
+
+          {% if employees|length == 0 %}
+          <tr><td colspan="6" class="empty">No employees found.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</section>
+
+{% endblock %}

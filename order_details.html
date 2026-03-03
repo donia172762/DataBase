@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="order-details-page">
+
+  <div class="order-top">
+    <div>
+      <h1>Order #{{ order.so_id }}</h1>
+      <p class="meta">
+        Date: <b>{{ order.sales_date }}</b>
+        <span class="dot">•</span>
+        Status:
+        <span class="status-pill {{ order.payment_status|lower }}">
+          {{ order.payment_status }}
+        </span>
+      </p>
+    </div>
+
+    <a class="back-btn" href="{{ url_for('my_orders') }}">← Back to My Orders</a>
+  </div>
+
+  <div class="order-card">
+    <table class="order-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th class="center">Qty</th>
+          <th class="right">Unit Price</th>
+          <th class="right">Total</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for i in items %}
+        <tr>
+          <td>{{ i.product_name }}</td>
+          <td class="center">{{ i.qty_sold }}</td>
+          <td class="right">{{ "%.2f"|format(i.selling_price_per_unit) }} ₪</td>
+          <td class="right">{{ "%.2f"|format(i.qty_sold * i.selling_price_per_unit) }} ₪</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <td colspan="3" class="right"><b>Grand Total</b></td>
+          <td class="right"><b>{{ "%.2f"|format(order.total_amount) }} ₪</b></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+order datials .html

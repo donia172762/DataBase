@@ -1,0 +1,23 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<h2>Purchases by Supplier</h2>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>Supplier</th>
+      <th>Total Purchases</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in data %}
+    <tr>
+      <td>{{ r.supplier_name }}</td>
+      <td>{{ r.total }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

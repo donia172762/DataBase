@@ -1,0 +1,39 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="container">
+
+  <h1 class="page-title">Update Stock</h1>
+  <p class="page-subtitle">Update quantity for a specific product in a warehouse.</p>
+
+  <div class="card table-card" style="padding:18px;">
+    <div style="margin-bottom:14px;">
+      <div><strong>Warehouse:</strong> {{ item.warehouse_name }}</div>
+      <div><strong>Product:</strong> {{ item.product_name }}</div>
+      <div><strong>Current Quantity:</strong> {{ item.quantity_available }}</div>
+      <div><strong>Last Restock:</strong> {{ item.last_restock_date or '-' }}</div>
+    </div>
+
+    <form method="POST" action="{{ url_for('update_stock', warehouse_id=item.warehouse_id, product_id=item.product_id) }}">
+      <div class="cust-grid">
+        <div class="f">
+          <label>New Quantity</label>
+          <input type="number" min="0" name="quantity_available" required value="{{ item.quantity_available }}">
+        </div>
+
+        <div class="f">
+          <label>Restock Date (optional)</label>
+          <input type="date" name="last_restock_date" value="{{ item.last_restock_date }}">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <a class="btn-ghost" href="{{ url_for('admin_stock') }}">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

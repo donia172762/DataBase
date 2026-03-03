@@ -1,0 +1,34 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<div class="page-header">
+    <h2>Edit Warehouse</h2>
+</div>
+
+<div class="card">
+    <form method="POST" class="form-grid">
+
+        <input type="text" name="warehouse_name"
+               value="{{ warehouse.warehouse_name }}" required>
+
+        <input type="text" name="location"
+               value="{{ warehouse.location }}" required>
+
+        <input type="text" name="phone"
+               value="{{ warehouse.phone }}" required>
+
+        <select name="branch_id" required>
+            {% for b in branches %}
+                <option value="{{ b.branch_id }}"
+                    {% if b.branch_id == warehouse.branch_id %}selected{% endif %}>
+                    {{ b.city }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-primary">Save Changes</button>
+
+    </form>
+</div>
+
+{% endblock %}
